@@ -1,0 +1,10 @@
+# Dataset
+Cityscapes_data/
+
+# Model Logs and Checkpoints
+lightning_logs/
+optuna_checkpoints_*/
+
+# Predictions
+output_predictions_onnx/
+
