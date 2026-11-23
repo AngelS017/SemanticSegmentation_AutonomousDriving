@@ -8,3 +8,11 @@ optuna_checkpoints_*/
 # Predictions
 output_predictions_onnx/
 
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+

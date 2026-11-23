@@ -96,7 +96,7 @@ class UpsamplingBlock(nn.Module):
         self.use_checkpointing = use_checkpointing
         # Transposed convolution layer (Upsampling)
         self.upsample = nn.ConvTranspose2d(in_channels, out_channels, kernel_size=2, stride=2)
-
+        
         # Dropout layer (applied after skip connection)
         self.dropout = nn.Dropout2d(p=dropout_prob)
         
@@ -110,17 +110,17 @@ class UpsamplingBlock(nn.Module):
             nn.ReLU(),
         )
 
+        # Weight initialization he_normal (Kaiming Normal) for Transposed Conv
+        nn.init.kaiming_normal_(self.upsample.weight, nonlinearity='relu')
+        if self.upsample.bias is not None:
+            nn.init.constant_(self.upsample.bias, 0)
+        
         # Weight initialization he_normal (Kaiming Normal) for Conv layers
         for model_layer in self.conv_block.modules():
             if isinstance(model_layer, nn.Conv2d):
                 nn.init.kaiming_normal_(model_layer.weight, nonlinearity='relu')
                 if model_layer.bias is not None:
                     nn.init.constant_(model_layer.bias, 0)
-        
-        # Weight initialization he_normal (Kaiming Normal) for Transposed Conv
-        nn.init.kaiming_normal_(self.upsample.weight, nonlinearity='relu')
-        if self.upsample.bias is not None:
-            nn.init.constant_(self.upsample.bias, 0)
 
     def forward(self, expansive_input: torch.Tensor, contractive_input: torch.Tensor = None) -> torch.Tensor:
         # Apply transposed convolution (Upsampling)

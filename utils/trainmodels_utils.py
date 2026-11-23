@@ -199,7 +199,7 @@ def train_model(config: dict[str, Any], mean_dataset: list[float] | torch.Tensor
         callbacks.append(PyTorchLightningPruningCallback(trial, monitor="val_iou"))
         
         # Checkpoint callback to save the best model for this trial
-        checkpoint_dir = os.path.join(BASE_DIR, "optuna_checkpoints_partially_frozen", f"trial_{trial.number}")
+        checkpoint_dir = os.path.join(BASE_DIR, "optuna_checkpoints_fully_freezed_upsample+conv2d", f"trial_{trial.number}")
         checkpoint_callback = ModelCheckpoint(
             dirpath=checkpoint_dir,
             filename="best_model",
@@ -318,7 +318,7 @@ def train_tune_hyperparameters(hyperparameters_space: dict[str, Any],
     """
     # Use SQLite for persistence and to allow optuna-dashboard to connect
     storage_name = "sqlite:///optuna_search.db"
-    study_name = "semantic_segmentation_tuning_partially_frozen"
+    study_name = "semantic_segmentation_tuning_fully_freezed_upsample+conv2d"
 
     study = optuna.create_study(
         study_name=study_name,
